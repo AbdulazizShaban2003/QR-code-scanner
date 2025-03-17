@@ -1,9 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class QrGeneratorScreen extends StatefulWidget {
   const QrGeneratorScreen({super.key});
@@ -11,6 +12,7 @@ class QrGeneratorScreen extends StatefulWidget {
   @override
   State<QrGeneratorScreen> createState() => _QrGeneratorScreenState();
 }
+
 class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
   final TextEditingController _textController = TextEditingController();
   final ScreenshotController _screenshotController = ScreenshotController();
@@ -22,45 +24,46 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
     'email': TextEditingController(),
     'url': TextEditingController(),
   };
+
   String _generateQrData() {
     switch (selectedType) {
       case 'contact':
-        return ''' BEGIN:VCARD
-        VERSION:3.0
-        FN:${_controllers['name']?.text}
-         TEL:${_controllers['phone']?.text}
-        EMAIL:${_controllers['email']?.text}
-        END:VCARD''';
-      case 'Url':
-        String Url = _controllers['Url']?.text ?? '';
-        if (!Url.startsWith('http://') && !Url.startsWith('https://')) {
-          Url = 'https://$Url';
+        return '''BEGIN:VCARD
+VERSION:3.0
+FN:${_controllers['name']?.text}
+TEL:${_controllers['phone']?.text}
+EMAIL:${_controllers['email']?.text}
+END:VCARD''';
+      case 'url':
+        String url = _controllers['url']?.text ?? '';
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          url = 'https://$url';
         }
-        return Url;
+        return url;
       default:
         return _textController.text;
     }
   }
+
   Future<void> _shareQRCode() async {
     final directory = await getApplicationDocumentsDirectory();
     final imagePath = '${directory.path}/qr_code.png';
     final capture = await _screenshotController.capture();
-    if (capture == null) return null;
+    if (capture == null) return;
 
     File imageFile = File(imagePath);
     await imageFile.writeAsBytes(capture);
     await Share.shareXFiles([XFile(imagePath)], text: "Share QR Code");
   }
+
   Widget _buildTextField(TextEditingController controller, String label) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
         onChanged: (_) {
           setState(() {
@@ -70,8 +73,9 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
       ),
     );
   }
+
   Widget _buildInputTextField() {
-    switch(selectedType){
+    switch (selectedType) {
       case 'contact':
         return Column(
           children: [
@@ -80,16 +84,14 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
             _buildTextField(_controllers['email']!, "Email"),
           ],
         );
-      case 'Url':
-        return _buildTextField(_controllers['Url']!, "URL");
+      case 'url':
+        return _buildTextField(_controllers['url']!, "URL");
       default:
         return TextField(
           controller: _textController,
           decoration: InputDecoration(
             labelText: "Enter Text",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           ),
           onChanged: (value) {
             setState(() {
@@ -102,6 +104,107 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: Colors.indigo,
+      appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.indigo,
+        elevation: 0,
+        title: Text("Generate QR Code", style: GoogleFonts.poppins()),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Card(
+                color: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SegmentedButton<String>(
+                        onSelectionChanged: (Set<String> selection) {
+                          setState(() {
+                            selectedType = selection.first;
+                            qrData = '';
+                          });
+                        },
+                        segments: const [
+                          ButtonSegment(
+                            value: 'text',
+                            label: Text("Text"),
+                            icon: Icon(Icons.text_fields),
+                          ),
+                          ButtonSegment(
+                            value: 'url',
+                            label: Text("URL"),
+                            icon: Icon(Icons.link),
+                          ),
+                          ButtonSegment(
+                            value: 'contact',
+                            label: Text("Contact"),
+                            icon: Icon(Icons.contact_page),
+                          ),
+                        ],
+                        selected: {selectedType},
+                      ),
+                      const SizedBox(height: 25),
+                      _buildInputTextField(),
+                      const SizedBox(height: 24),
+                      if (qrData.isNotEmpty)
+                        Column(
+                          children: [
+                            Card(
+                              color: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  children: [
+                                    Screenshot(
+                                      controller: _screenshotController,
+                                      child: Container(
+                                        color: Colors.white,
+                                        padding: const EdgeInsets.all(16),
+                                        child: QrImageView(
+                                          data: qrData,
+                                          version: QrVersions.auto,
+                                          size: 200,
+                                          errorCorrectionLevel:
+                                              QrErrorCorrectLevel.H,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      const SizedBox(height: 20),
+                      ElevatedButton.icon(
+                        onPressed: _shareQRCode,
+                        icon: const Icon(Icons.share),
+                        label: const Text("Share QR Code"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
