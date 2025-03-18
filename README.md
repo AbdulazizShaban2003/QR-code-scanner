@@ -1,16 +1,42 @@
-# barcode
+# QR Code Scanner App
 
-A new Flutter project.
+A flutter application for scanning QR codes && generator QR, processing URLs, and saving contacts from vCard data.
 
-## Getting Started
+## 📸 Features
+- Scan QR codes using the camera
+- Detect and process different QR data types (URLs, contacts, text, etc.)
+- Open scanned URLs in the browser
+- Save contact details directly to the phone
+- Share scanned data
+- Flashlight toggle for scanning in low-light
 
-This project is a starting point for a Flutter application.
+## 🚀 Installation
 
-A few resources to get you started if this is your first Flutter project:
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/AbdulazizShaban2003/QR-code-scanner.git
+   ```
+2. Navigate to the project directory:
+   ```sh
+   cd your-repo
+   ```
+3. Install dependencies:
+   ```sh
+   flutter pub get
+   ```
+4. Run the application:
+   ```sh
+   flutter run
+   ```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🛠️ Technologies Used
+- Flutter
+- Dart
+- Mobile Scanner (QR Code scanning)
+- Permission Handler
+- URL Launcher
+- Flutter Contacts
+- Share Plus
+- Path_provider
+- qr_flutter
+- screenshot
