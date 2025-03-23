@@ -1,7 +1,13 @@
+import 'package:barcode/config/routes/app_routes.dart';
+import 'package:barcode/core/utiles/app_string.dart';
 import 'package:barcode/features/home/presentation/view/qr_generator_screen.dart';
 import 'package:barcode/features/home/presentation/view/qr_scanner_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import '../../../../config/themes/app_color.dart';
+import '../../../../core/utiles/app_size.dart';
+import '../component/BuildFeatureButton.dart';
+import '../widget/custom_app_bar_home_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,32 +15,25 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo,
+      backgroundColor: AppColor.indigoColor,
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Text(
-                "QR Code Pro",
-                style: GoogleFonts.poppins(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(height: 50),
+            verticalSpace(context, 0.04),
+            CustomAppBarHomeScreen(),
+            verticalSpace(context, 0.06),
             Center(
               child: Container(
-                padding: EdgeInsets.all(50),
+                padding: EdgeInsets.symmetric(
+                  horizontal: responsiveWidth(context, 0.1),
+                  vertical: responsiveHeight(context, 0.1),
+                ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: AppColor.blackColor.withOpacity(0.1),
                       blurRadius: 10,
                       spreadRadius: 5,
                     ),
@@ -44,30 +43,24 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildFeatureButton(
-                      context,
-                      "Generate QR Code",
-                      Icons.qr_code,
-                      () {
-                        Navigator.push(
+                    BuildFeatureButton(
+                      title: AppString.generateQrCode,
+                      icon: Icons.qr_code,
+                      onPressed: () {
+                        RouteManager.navigateTo(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) => const QrGeneratorScreen(),
-                          ),
+                          const QrGeneratorScreen(),
                         );
                       },
                     ),
-                    SizedBox(height: 30),
-                    _buildFeatureButton(
-                      context,
-                      "Scan QR Code",
-                      Icons.qr_code_scanner,
-                      () {
-                        Navigator.push(
+                    verticalSpace(context, 0.03),
+                    BuildFeatureButton(
+                      title: AppString.scanQrCode,
+                      icon: Icons.qr_code_scanner,
+                      onPressed: () {
+                        RouteManager.navigateTo(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) => const QrScannerScreen(),
-                          ),
+                          const QrScannerScreen(),
                         );
                       },
                     ),
@@ -80,37 +73,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
-Widget _buildFeatureButton(
-    BuildContext context,
-    String title,
-    IconData icon,
-    VoidCallback onPressed,
-    ) {
-  return GestureDetector(
-    onTap: onPressed,
-    child: Container(
-      padding: EdgeInsets.all(15),
-      height: 200,
-      width: 250,
-      decoration: BoxDecoration(
-        color: Colors.indigo,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Icon(icon, size: 90, color: Colors.white),
-          Text(
-            title,
-            style: GoogleFonts.poppins(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
 }

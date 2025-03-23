@@ -16,9 +16,10 @@ class BarcodeApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(),
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
-            seedColor: Colors.indigo),
+          seedColor: Colors.indigo,
+        ),
       ),
-      home:  HomePage(),
+      home: HomePage(),
     );
   }
 }
