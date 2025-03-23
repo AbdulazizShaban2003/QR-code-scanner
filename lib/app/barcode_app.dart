@@ -1,4 +1,5 @@
 import 'package:barcode/features/home/presentation/view/home.dart';
+import 'package:barcode/features/splash/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,7 +20,7 @@ class BarcodeApp extends StatelessWidget {
           seedColor: Colors.indigo,
         ),
       ),
-      home: HomePage(),
+      home: SplashView(),
     );
   }
 }

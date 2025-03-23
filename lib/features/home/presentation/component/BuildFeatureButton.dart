@@ -24,7 +24,7 @@ class BuildFeatureButton extends StatelessWidget {
         height: responsiveHeight(context, 0.23),
         width: responsiveWidth(context, 0.55),
         decoration: BoxDecoration(
-          color: AppColor.indigoColor,
+          color: AppColor.pinkColor,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(

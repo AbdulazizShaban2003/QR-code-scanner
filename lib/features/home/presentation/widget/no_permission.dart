@@ -9,10 +9,10 @@ class NoPermission extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      backgroundColor: AppColor.indigoColor,
+      backgroundColor: AppColor.pinkColor,
       appBar: AppBar(
         title: Text("Scanner"),
-        backgroundColor: AppColor.indigoColor,
+        backgroundColor: AppColor.pinkColor,
         foregroundColor: AppColor.whiteColor,
       ),
       body: Column(
@@ -40,7 +40,7 @@ class NoPermission extends StatelessWidget {
                       ElevatedButton(
                         onPressed: onPressed,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.indigoColor,
+                          backgroundColor: AppColor.pinkColor,
                           foregroundColor: AppColor.whiteColor,
                         ),
                         child: Text("Grant Permission"),

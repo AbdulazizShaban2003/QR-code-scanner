@@ -43,10 +43,10 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     return !hasPermission
         ? NoPermission(onPressed: _checkPermission)
         : Scaffold(
-          backgroundColor: AppColor.indigoColor,
+          backgroundColor: AppColor.pinkColor,
           appBar: AppBar(
             title: Text(AppString.scanQrCode),
-            backgroundColor: AppColor.indigoColor,
+            backgroundColor: AppColor.pinkColor,
             foregroundColor: AppColor.whiteColor,
             actions: [
               IconButton(

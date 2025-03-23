@@ -98,10 +98,10 @@ class _QrGeneratorScreenState extends State<QrGeneratorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.indigoColor,
+      backgroundColor: AppColor.pinkColor,
       appBar: AppBar(
         foregroundColor: AppColor.whiteColor,
-        backgroundColor: AppColor.indigoColor,
+        backgroundColor: AppColor.pinkColor,
         elevation: 0,
         title: Text(AppString.generateQrCode, style: GoogleFonts.poppins()),
       ),
